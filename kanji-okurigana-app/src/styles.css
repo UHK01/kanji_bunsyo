@@ -1,0 +1,148 @@
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff; /* 薄い青色 */
+    color: #333;
+}
+
+/* コンテナ */
+#app {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #87ceeb; /* スカイブルーの枠線 */
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #4682b4; /* スチールブルー */
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #5f9ea0; /* キャデットブルー */
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+}
+
+table th, table td {
+    border: 1px solid #87ceeb; /* スカイブルー */
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #4682b4; /* スチールブルー */
+    color: #ffffff;
+}
+
+table tr:nth-child(even) {
+    background-color: #f0f8ff; /* 薄い青色 */
+}
+
+table tr:hover {
+    background-color: #e0ffff; /* ライトシアン */
+}
+
+/* ボタンのスタイル */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+button.edit {
+    background-color: #4CAF50; /* 緑色 */
+    color: white;
+}
+
+button.delete {
+    background-color: #f44336; /* 赤色 */
+    color: white;
+}
+
+button.save {
+    background-color: #2196F3; /* 青色 */
+    color: white;
+}
+
+button.add {
+    background-color: #FF9800; /* オレンジ色 */
+    color: white;
+}
+
+/* 入力フォームのスタイル */
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+form input[type="text"]:focus {
+    border-color: #87ceeb; /* スカイブルー */
+    outline: none;
+    background-color: #ffffff;
+}
+
+form button {
+    flex: 0 0 auto;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    #app {
+        padding: 10px;
+    }
+
+    table th, table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form input[type="text"] {
+        width: 100%;
+    }
+}

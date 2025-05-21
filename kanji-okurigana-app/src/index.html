@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漢字の送り仮名クイズ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>漢字の送り仮名クイズ</h1>
+        <div id="question-container"></div>
+        <p id="result"></p>
+        <div id="status-container">
+            <h2>解答状況</h2>
+            <table id="status-table">
+                <thead>
+                    <tr>
+                        <th>問題</th>
+                        <th>結果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 解答状況がここに追加されます -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="data/kanji-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
