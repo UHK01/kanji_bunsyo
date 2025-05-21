@@ -34,6 +34,16 @@ function startQuiz() {
     // イベントリスナーを設定
     document.getElementById("submit-answer").addEventListener("click", checkAnswer);
 
+    // Enterキーで解答を送信
+    document.getElementById("user-input").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            checkAnswer();
+        }
+    });
+
+    // 自動で入力フォームにフォーカス
+    document.getElementById("user-input").focus();
+
     loadQuestion();
 }
 
@@ -94,7 +104,7 @@ function checkAnswer() {
 
     if (elapsedTime > 10) {
         // 時間切れの場合の処理
-        document.getElementById("result").innerText = "時間切れです！正しい送り仮名は「${correctAnswer}」です。";
+        document.getElementById("result").innerText = `時間切れです！正しい送り仮名は「${correctAnswer}」です。`;
         document.getElementById("result").className = "error";
 
         // 解答状況に「時間切れ」を追加
@@ -130,12 +140,21 @@ function checkAnswer() {
     // 入力を無効化
     document.getElementById("user-input").disabled = true;
     document.getElementById("next-question").style.display = "block";
+
+    const userInput = document.getElementById("next-question");
+    if (userInput) {
+        userInput.focus();
+    }
 }
 
 function nextQuestion() {
     // 次の問題に進む際に「正解です」や「不正解です」のメッセージを消す
     document.getElementById("result").innerText = "";
     loadQuestion();
+    const userInput = document.getElementById("user-input");
+    if (userInput) {
+        userInput.focus();
+    }
 }
 
 function restartQuiz() {
