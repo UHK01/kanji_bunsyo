@@ -92,9 +92,9 @@ function checkAnswer() {
     // 解答時間を計測
     const elapsedTime = (Date.now() - startTime) / 1000; // 秒単位
 
-    if (elapsedTime > 5) {
+    if (elapsedTime > 10) {
         // 時間切れの場合の処理
-        document.getElementById("result").innerText = "時間切れです！もう一度挑戦してください。";
+        document.getElementById("result").innerText = "時間切れです！正しい送り仮名は「${correctAnswer}」です。";
         document.getElementById("result").className = "error";
 
         // 解答状況に「時間切れ」を追加
