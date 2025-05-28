@@ -124,7 +124,7 @@ function checkAnswer() {
     // 解答時間を計測
     const elapsedTime = (Date.now() - startTime) / 1000; // 秒単位
 
-    if (elapsedTime > 10) {
+    if (elapsedTime > 30) {
         // 時間切れの場合の処理
         document.getElementById("result").innerText = `時間切れです！正しい送り仮名は「${correctAnswer}」です。`;
         document.getElementById("result").className = "error";
