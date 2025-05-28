@@ -2,16 +2,31 @@ let usedQuestions = []; // 出題済みの問題を記録する配列
 let incorrectQuestions = []; // 間違えた問題を記録する配列
 let currentQuestionIndex = null; // 現在の問題のインデックス
 let startTime = null; // 問題が表示された時間を記録
+let selectedKanjiData = kanjiData; // 選択された問題セット
 
 function showStartScreen() {
     document.getElementById("question-container").innerHTML = `
         <h2>漢字の送り仮名クイズ</h2>
-        <p>スタートボタンを押してクイズを始めましょう！</p>
+        <p>問題セットを選択してください。</p>
+        <select id="question-set">
+            <option value="kanjiData">問題1</option>
+            <option value="kanjiData1">問題2</option>
+            <option value="kanjiData2">問題3</option>
+            <option value="kanjiData3">問題4</option>
+        </select>
         <button id="start-quiz">スタート</button>
     `;
 
     // スタートボタンのイベントリスナーを追加
-    document.getElementById("start-quiz").addEventListener("click", startQuiz);
+    document.getElementById("start-quiz").addEventListener("click", () => {
+        const selectedSet = document.getElementById("question-set").value;
+        selectedKanjiData = 
+            selectedSet === "kanjiData" ? kanjiData :
+            selectedSet === "kanjiData1" ? kanjiData1 :
+            selectedSet === "kanjiData2" ? kanjiData2 :
+            kanjiData3; // 問題4を追加
+        startQuiz();
+    });
 }
 
 function startQuiz() {
@@ -19,7 +34,7 @@ function startQuiz() {
     document.getElementById("question-container").innerHTML = `
         <p id="question"></p>
         <input type="text" id="user-input" placeholder="送り仮名を入力">
-        <button id="submit-answer">回答する</button>
+        <button id="submit-answer" disabled>回答する</button>
     `;
     document.getElementById("result").innerText = "";
 
@@ -32,40 +47,47 @@ function startQuiz() {
     document.getElementById("question-container").appendChild(nextButton);
 
     // イベントリスナーを設定
-    document.getElementById("submit-answer").addEventListener("click", checkAnswer);
+    const userInput = document.getElementById("user-input");
+    const submitButton = document.getElementById("submit-answer");
+
+    userInput.addEventListener("input", () => {
+        submitButton.disabled = userInput.value.trim() === "";
+    });
+
+    submitButton.addEventListener("click", checkAnswer);
 
     // Enterキーで解答を送信
-    document.getElementById("user-input").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
+    userInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" && userInput.value.trim() !== "") {
             checkAnswer();
         }
     });
 
     // 自動で入力フォームにフォーカス
-    document.getElementById("user-input").focus();
+    userInput.focus();
 
     loadQuestion();
 }
 
 function loadQuestion() {
-    if (usedQuestions.length < kanjiData.length || incorrectQuestions.length > 0) {
+    if (usedQuestions.length < selectedKanjiData.length || incorrectQuestions.length > 0) {
         let randomIndex;
 
-        // 解けていない問題を一定の確率で挟む
-        if (incorrectQuestions.length > 0 && Math.random() < 0.5) {
+        // 解けていない問題を一定の低確率で挟む
+        if (incorrectQuestions.length > 0 && Math.random() < 0.2) { // 確率を0.2に変更
             // 間違えた問題からランダムに取得（配列を変更しない）
             randomIndex = incorrectQuestions[Math.floor(Math.random() * incorrectQuestions.length)];
         } else {
             // ランダムなインデックスを取得
             do {
-                randomIndex = Math.floor(Math.random() * kanjiData.length);
+                randomIndex = Math.floor(Math.random() * selectedKanjiData.length);
             } while (usedQuestions.includes(randomIndex)); // 未出題の問題を選ぶ
         }
 
         // インデックスが正しいか確認
-        if (randomIndex >= 0 && randomIndex < kanjiData.length) {
+        if (randomIndex >= 0 && randomIndex < selectedKanjiData.length) {
             usedQuestions.push(randomIndex); // 出題済みとして記録
-            const currentQuestion = kanjiData[randomIndex];
+            const currentQuestion = selectedKanjiData[randomIndex];
 
             document.getElementById("question").innerText = currentQuestion.kanji;
             document.getElementById("user-input").value = "";
@@ -97,7 +119,7 @@ function loadQuestion() {
 
 function checkAnswer() {
     const userAnswer = document.getElementById("user-input").value.trim();
-    const correctAnswer = kanjiData[currentQuestionIndex].okurigana;
+    const correctAnswer = selectedKanjiData[currentQuestionIndex].okurigana;
 
     // 解答時間を計測
     const elapsedTime = (Date.now() - startTime) / 1000; // 秒単位
@@ -106,11 +128,17 @@ function checkAnswer() {
         // 時間切れの場合の処理
         document.getElementById("result").innerText = `時間切れです！正しい送り仮名は「${correctAnswer}」です。`;
         document.getElementById("result").className = "error";
+        updateStatusTable(selectedKanjiData[currentQuestionIndex].kanji, "時間切れ");
 
-        // 解答状況に「時間切れ」を追加
-        updateStatusTable(kanjiData[currentQuestionIndex].kanji, "時間切れ");
+        if (!incorrectQuestions.includes(currentQuestionIndex)) {
+            incorrectQuestions.push(currentQuestionIndex);
+        }
+    } else if (userAnswer === "") {
+        // 未入力の場合の処理
+        document.getElementById("result").innerText = `未入力です。不正解！正しい送り仮名は「${correctAnswer}」です。`;
+        document.getElementById("result").className = "error";
+        updateStatusTable(selectedKanjiData[currentQuestionIndex].kanji, "未入力");
 
-        // 時間切れの場合、問題を再度記録
         if (!incorrectQuestions.includes(currentQuestionIndex)) {
             incorrectQuestions.push(currentQuestionIndex);
         }
@@ -118,9 +146,8 @@ function checkAnswer() {
         // 正解時の処理
         document.getElementById("result").innerText = "正解です！";
         document.getElementById("result").className = "success";
-        updateStatusTable(kanjiData[currentQuestionIndex].kanji, "正解");
+        updateStatusTable(selectedKanjiData[currentQuestionIndex].kanji, "正解");
 
-        // 正解した場合、`incorrectQuestions`から削除
         const index = incorrectQuestions.indexOf(currentQuestionIndex);
         if (index !== -1) {
             incorrectQuestions.splice(index, 1);
@@ -129,21 +156,20 @@ function checkAnswer() {
         // 不正解時の処理
         document.getElementById("result").innerText = `不正解です。正しい送り仮名は「${correctAnswer}」です。`;
         document.getElementById("result").className = "error";
-        updateStatusTable(kanjiData[currentQuestionIndex].kanji, "不正解");
+        updateStatusTable(selectedKanjiData[currentQuestionIndex].kanji, "不正解");
 
-        // 間違えた問題を記録（重複を防ぐ）
         if (!incorrectQuestions.includes(currentQuestionIndex)) {
             incorrectQuestions.push(currentQuestionIndex);
         }
     }
 
-    // 入力を無効化
+    // 入力を無効化して次の問題ボタンを表示
     document.getElementById("user-input").disabled = true;
     document.getElementById("next-question").style.display = "block";
 
-    const userInput = document.getElementById("next-question");
-    if (userInput) {
-        userInput.focus();
+    const nextButton = document.getElementById("next-question");
+    if (nextButton) {
+        nextButton.focus();
     }
 }
 
