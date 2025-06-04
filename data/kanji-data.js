@@ -1,6 +1,7 @@
 const kanjiData = [
     // { kanji: '潜伏', okurigana: 'せんぷく' },
     // { kanji: '措置', okurigana: 'そち' },
+    // { kanji: '措置', okurigana: 'そち' },
     { kanji: '恩赦', okurigana: 'おんしゃ' },
     { kanji: '鋳造', okurigana: 'ちゅうぞう' },
     // { kanji: '危篤', okurigana: 'きとく' },
