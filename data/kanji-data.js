@@ -23,14 +23,14 @@ const kanjiData = [
     // { kanji: '職業に就く', okurigana: 'つ' },
     // { kanji: '駅に着く', okurigana: 'つ' },
     // { kanji: '品物を納める', okurigana: 'おさ' },
-    { kanji: '学問を修める', okurigana: 'おさ' },
-    { kanji: '国を治める', okurigana: 'おさ' },
+    // { kanji: '学問を修める', okurigana: 'おさ' },
+    // { kanji: '国を治める', okurigana: 'おさ' },
     { kanji: '死を悼む', okurigana: 'いた' },
     // { kanji: '屋根が傷む', okurigana: 'いた' },
     // { kanji: '古傷が痛む', okurigana: 'いた' },
     // { kanji: '固い友情で結ばれる', okurigana: 'かた' },
     // { kanji: 'ダイアモンドは硬い', okurigana: 'かた' },
-    { kanji: '義理堅い人物', okurigana: 'かた' },
+    // { kanji: '義理堅い人物', okurigana: 'かた' },
 ];
 const kanjiData1 = [
     { kanji: '勘定', okurigana: 'かんじょう' },
